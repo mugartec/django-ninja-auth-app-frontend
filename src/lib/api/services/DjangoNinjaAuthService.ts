@@ -5,7 +5,7 @@ import type { ChangePasswordIn } from '../models/ChangePasswordIn';
 import type { LoginIn } from '../models/LoginIn';
 import type { RequestPasswordResetIn } from '../models/RequestPasswordResetIn';
 import type { SetPasswordIn } from '../models/SetPasswordIn';
-import type { UserOut } from '../models/UserOut';
+import type { User } from '../models/User';
 import { request as __request } from '../core/request';
 
 export class DjangoNinjaAuthService {
@@ -13,12 +13,12 @@ export class DjangoNinjaAuthService {
     /**
      * Login
      * @param requestBody
-     * @returns UserOut OK
+     * @returns User OK
      * @throws ApiError
      */
     public static async login(
         requestBody: LoginIn,
-    ): Promise<UserOut> {
+    ): Promise<User> {
         const result = await __request({
             method: 'POST',
             path: `/api/auth/`,
@@ -45,10 +45,10 @@ export class DjangoNinjaAuthService {
 
     /**
      * Me
-     * @returns UserOut OK
+     * @returns User OK
      * @throws ApiError
      */
-    public static async me(): Promise<UserOut> {
+    public static async me(): Promise<User> {
         const result = await __request({
             method: 'GET',
             path: `/api/auth/me`,
@@ -76,18 +76,19 @@ export class DjangoNinjaAuthService {
     /**
      * Reset Password
      * @param requestBody
-     * @returns UserOut OK
+     * @returns User OK
      * @throws ApiError
      */
     public static async resetPassword(
         requestBody: SetPasswordIn,
-    ): Promise<UserOut> {
+    ): Promise<User> {
         const result = await __request({
             method: 'POST',
             path: `/api/auth/reset_password`,
             body: requestBody,
             errors: {
                 403: `Error`,
+                422: `Error`,
             },
         });
         return result.body;
